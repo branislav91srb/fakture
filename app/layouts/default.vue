@@ -2,6 +2,7 @@
     <div>
         <UContainer>
             <!-- <BaseNavMenu /> -->
+            <UHeader title="Fakture" />
             <slot />
         </UContainer>
     </div>

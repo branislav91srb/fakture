@@ -12,9 +12,10 @@
   "dependencies": {
     "@nuxt/scripts": "0.13.0",
     "@nuxt/ui": "4.2.1",
+    "@nuxthub/core": "0.9.0",
     "@unhead/vue": "^2.0.19",
     "nuxt": "^4.2.1",
-    "nuxt-surrealdb": "0.4.1",
+    "postgres": "^3.4.7",
     "tailwindcss": "^4.1.17",
     "typescript": "^5.9.3",
     "vue": "^3.5.25",
