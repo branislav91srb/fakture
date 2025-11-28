@@ -1,5 +1,6 @@
 import { usePostgres } from "../../utils/postgres"
 import type { InvoiceDbEntity, InvoiceItemDbEntity, InvoiceWithItems } from "../../../shared/types/invoiceDbTypes"
+import { format } from "date-fns"
 
 export default eventHandler(async (event) => {
     const sql = usePostgres()
@@ -7,8 +8,6 @@ export default eventHandler(async (event) => {
     const body = await readBody(event);
     const invoiceWithItems = body as InvoiceWithItems;
     const { invoice, items } = invoiceWithItems;
-
-    console.log(invoiceWithItems)
 
     if (items.length == 0) {
         throw new Error("Invoice items are required.")
@@ -30,19 +29,18 @@ export default eventHandler(async (event) => {
             ${invoice.invoiceNumber},
             ${invoice.companyId},
             ${invoice.clientId},
-            ${new Date(invoice.turnoverDate).toISOString()},
-            ${new Date(invoice.paymentDeadline).toISOString()},
+            ${invoice.turnoverDate ? format(new Date(invoice.turnoverDate), "yyyy-MM-dd HH:mm:ss.SSSSSS XXX") : null},
+            ${invoice.paymentDeadline ? format(new Date(invoice.paymentDeadline), "yyyy-MM-dd HH:mm:ss.SSSSSS XXX") : null},
             ${invoice.value}
         )
         
         RETURNING id
     `;
 
-        console.log(idResult)
+        const insertedInvoiceId = idResult[0].id;
 
         const values = items.map(item => [
-            item.id,
-            item.invoiceId,
+            insertedInvoiceId,
             item.order,
             item.description,
             item.unit,
@@ -53,9 +51,8 @@ export default eventHandler(async (event) => {
 
         await sql
             `INSERT INTO invoice_items (
-                    id,
                     invoice_id,
-                    order,
+                    "order",
                     description,
                     unit,
                     quantity,

@@ -7,6 +7,22 @@ const props = defineProps({
 const editing = ref(false)
 const model = defineModel();
 
+const editInputRef = useTemplateRef('edit-input')
+
+let oldValue: any = null
+
+watch(editing, (newVal) => {
+    if (newVal) {
+        nextTick(() => {
+            editInputRef.value?.inputRef?.focus();
+            editInputRef.value?.inputRef?.select();
+        });
+        oldValue = model.value;
+    } else {
+        oldValue = null;
+    }
+});
+
 const classObject = computed(() => ({
     'text-right': props.type == 'number',
     'text-left': props.type != 'number',
@@ -16,10 +32,20 @@ const classObject = computed(() => ({
 const submitInputChange = () => {
     editing.value = false
 }
+
+const revertInputChange = () => {
+
+    if (oldValue === null) return;
+
+    model.value = oldValue
+    editing.value = false
+}
+
 </script>
 
 <template>
-    <UInput v-if="editing" v-model="model" :type="props.type" ref="edit-input" variant="outline" @keydown.enter="submitInputChange">
+    <UInput v-if="editing" v-model="model" :type="props.type" ref="edit-input" variant="outline" v-bind:min="props.type === 'number' ? 0 : null"
+        @keydown.enter="submitInputChange" @keydown.esc="revertInputChange" @blur="submitInputChange">
 
         <UTooltip text="Submit" :content="{ side: 'right' }">
             <UButton :color="'success'" variant="link" size="sm" :icon="'i-lucide-check'" aria-label="Submit"

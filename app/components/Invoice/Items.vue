@@ -8,8 +8,8 @@ const invoiceValue = computed(() => {
 
 const addItem = () => {
     const newItem: InvoiceItem = {
-        amount: 0,
         description: 'N/A',
+        amount: 1,
         value: 0,
         tax: 0
     };
@@ -48,7 +48,7 @@ const removeRow = (index: number) => {
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(v, i) in items">
+            <tr v-for="(v, i) in items" :key="i">
                 <td class="custom-td">{{ i + 1 }}</td>
                 <td class="custom-td">
                     <InvoiceEditableValue v-model="v.description" :type="'text'" />
@@ -69,8 +69,11 @@ const removeRow = (index: number) => {
                     </UButton>
                 </td>
             </tr>
-            <tr>
-                <td colspan="100%" class="custom-td text-right">
+            <tr class="border-t-2">
+                <td colspan="5" class="custom-td text-right">
+                    Total
+                </td>
+                <td colspan="2" class="custom-td text-right">
                     {{ invoiceValue }}
                 </td>
             </tr>

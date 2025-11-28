@@ -27,5 +27,5 @@ const getCompanyData = async () => {
 
 <template>
     <USelectMenu placeholder="Select company" v-model="selectedCompany" :items="companiesForSelect" size="xl"
-        class="w-64 mr-3" @change="getCompanyData" />
+        class="w-64" @change="getCompanyData" />
 </template>
