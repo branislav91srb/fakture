@@ -3,9 +3,11 @@
     <NuxtRouteAnnouncer />
     <!-- <NuxtWelcome /> -->
     <UApp>
-      <NuxtLayout>
-        <NuxtPage />
-      </NuxtLayout>
+      <UMain>
+        <NuxtLayout>
+          <NuxtPage />
+        </NuxtLayout>
+      </UMain>
     </UApp>
   </div>
 </template>

@@ -4,10 +4,10 @@ services:
     image: postgres:18.1
     container_name: fakture-db
     ports:
-      - "5432:5432"
+      - 5432:5432
     environment:
       POSTGRES_DB: fakture
       POSTGRES_USER: app_user
       POSTGRES_PASSWORD: password
     volumes:
-      - "./pgdata:/var/lib/postgresql/"
+      - ./pgdata:/var/lib/postgresql/
